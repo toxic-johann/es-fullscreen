@@ -1,6 +1,6 @@
 {
   "name": "es-fullscreen",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "fullscreen library written in es6",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -36,7 +36,7 @@
   "homepage": "https://github.com/toxic-johann/es-fullscreen#readme",
   "dependencies": {
     "babel-runtime": "^6.26.0",
-    "toxic-predicate-functions": "^0.1.3"
+    "toxic-predicate-functions": "^0.1.4"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
