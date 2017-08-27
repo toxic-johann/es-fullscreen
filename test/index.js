@@ -1,5 +1,13 @@
-import {expect} from 'chai';
+import chai from 'chai';
+const {expect} = chai;
+import fullscreen from '../src/index.js';
 
-describe('test', () => {
-  expect(1).to.equal(1);
+describe('base test', () => {
+  it('default fullscreen element', () => {
+    expect(fullscreen.fullscreenElement).to.equal(null);
+  });
+
+  it('default isFullScreen', () => {
+    expect(fullscreen.isFullScreen).to.equal(false);
+  });
 });

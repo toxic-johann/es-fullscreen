@@ -8,7 +8,7 @@
   "browser": "lib/index.browser.js",
   "scripts": {
     "precommit": "npm run lint",
-    "postmerge": "sh tool/auto-npm-install.sh",
+    "postmerge": "",
     "test": "karma start",
     "lint": "eslint ./src --fix && flow",
     "flow": "flow",
@@ -62,6 +62,7 @@
     "karma-ie-launcher": "^1.0.0",
     "karma-mocha": "^1.3.0",
     "karma-opera-launcher": "^1.0.0",
+    "karma-rollup-preprocessor": "^5.0.1",
     "karma-safari-launcher": "^1.0.0",
     "mocha": "^3.5.0",
     "rollup": "^0.48.2",

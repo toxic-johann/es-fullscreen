@@ -1,3 +1,9 @@
+const flow = require('rollup-plugin-flow-no-whitespace');
+const babel = require('rollup-plugin-babel');
+const resolve = require('rollup-plugin-node-resolve');
+const common = require('rollup-plugin-commonjs');
+
+
 // Karma configuration
 // Generated on Fri Aug 25 2017 23:03:29 GMT+0800 (CST)
 
@@ -28,15 +34,35 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/**/*.js': ['babel'],
-      'test/**/*.js': ['babel']
+      'src/**/*.js': ['rollup'],
+      'test/**/*.js': ['rollup']
+    },
+
+    rollupPreprocessor: {
+      format: 'umd',
+      name: 'esFullscreen',
+      plugins: [
+        babel({
+          presets: ['flow', 'es2015-rollup', 'stage-0'],
+          plugins: [],
+          exclude: 'node_modules/**',
+          babelrc: false
+        }),
+        flow(),
+        resolve({
+          customResolveOptions: {
+            moduleDirectory: ['src', 'node_modules']
+          }
+        }),
+        common()
+      ]
     },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
 
 
     // web server port
