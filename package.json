@@ -9,7 +9,7 @@
   "scripts": {
     "precommit": "npm run lint",
     "postmerge": "",
-    "test": "karma start",
+    "test": "karma start && lcov-result-merger 'coverage/*/lcov.info' 'coverage/lcov.info'",
     "lint": "eslint ./src --fix && flow",
     "flow": "flow",
     "start": "rollup -c build/rollup.config.dev.js -w",
@@ -64,6 +64,7 @@
     "karma-opera-launcher": "^1.0.0",
     "karma-rollup-preprocessor": "^5.0.1",
     "karma-safari-launcher": "^1.0.0",
+    "lcov-result-merger": "^1.2.0",
     "mocha": "^3.5.0",
     "rollup": "^0.48.2",
     "rollup-plugin-babel": "^3.0.2",

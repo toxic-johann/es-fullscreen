@@ -34,7 +34,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/**/*.js': ['rollup'],
+      'src/**/*.js': ['rollup', 'coverage'],
       'test/**/*.js': ['rollup']
     },
 
@@ -64,6 +64,10 @@ module.exports = function(config) {
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: ['progress', 'coverage'],
 
+    coverageReporter: {
+      type: 'lcov',
+      dir: 'coverage/'
+    },
 
     // web server port
     port: 9876,
@@ -84,12 +88,13 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['IE', 'Chrome', 'Safari', 'Firefox', 'ChromeCanary', 'Opera'],
+    // browsers: ['IE', 'Chrome', 'Safari', 'Firefox', 'ChromeCanary', 'Opera'],
+    browsers: ['Chrome', 'Firefox', 'ChromeCanary', 'Opera'],
 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous
