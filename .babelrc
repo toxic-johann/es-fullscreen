@@ -1,7 +1,12 @@
 {
  "presets": [
     "flow",
-    ["env", {"modules": false}],
+    ["env", {
+      "modules": false,
+      "test": {
+        "plugins": [ "istanbul" ]
+      }
+    }],
     "stage-0"
   ],
   "plugins": []

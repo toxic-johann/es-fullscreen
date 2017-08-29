@@ -9,7 +9,8 @@
   "scripts": {
     "precommit": "npm run lint",
     "postmerge": "",
-    "test": "karma start && lcov-result-merger 'coverage/*/lcov.info' 'coverage/lcov.info'",
+    "test": "karma start --single-run && lcov-result-merger 'coverage/*/lcov.info' | coveralls",
+    "unit": "karma start",
     "lint": "eslint ./src --fix && flow",
     "flow": "flow",
     "start": "rollup -c build/rollup.config.dev.js -w",
@@ -48,6 +49,7 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^4.1.1",
+    "coveralls": "^2.13.1",
     "eslint": "^4.5.0",
     "eslint-plugin-flowtype": "^2.35.0",
     "eslint-plugin-mocha": "^4.11.0",

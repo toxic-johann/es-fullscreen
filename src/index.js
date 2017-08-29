@@ -1,5 +1,5 @@
 // @flow
-import {defined, isElement, isPosterityNode, isObject, isString, isFunction} from 'toxic-predicate-functions';
+import {defined, isElement, isPosterityNode, isObject, isString, isFunction, isEvent} from 'toxic-predicate-functions';
 const VENDOR_PREFIXES = ['', 'o', 'ms', 'moz', 'webkit', 'webkitCurrent'];
 const SYNONYMS = [
   ['', ''], // empty
@@ -153,7 +153,7 @@ class FullScreen {
       event.eventType = eventName;
       event.eventName = eventName;
     }
-    if(!isObject(event)) throw new Error("We can't create an object on this browser, please report to author");
+    if(!isObject(event) && !isEvent(event)) throw new Error("We can't create an object on this browser, please report to author");
     if(element.dispatchEvent) {
       element.dispatchEvent(event);
     // $FlowFixMe: IE < 9
