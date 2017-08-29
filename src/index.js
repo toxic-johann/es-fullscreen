@@ -17,35 +17,35 @@ const DESKTOP_FULLSCREEN_STYLE = {
 };
 function setStyle (el: Element, key: string | Object, val?: string) {
   if (isObject(key)) {
-    for(const k in key) {
+    for (const k in key) {
       setStyle(el, k, key[k]);
     }
-  }else{
+  } else {
     // $FlowFixMe: we found it
     el.style[key] = val;
   }
 }
 
 function native (target: HTMLElement | string | Object | null, name?: string | Object, option?: {keyOnly?: boolean} = {}) {
-  if(isObject(name)) {
+  if (isObject(name)) {
     option = name;
   }
-  if(isString(target)) {
+  if (isString(target)) {
     name = target;
   }
-  if(!isElement(target)) {
+  if (!isElement(target)) {
     target = document;
   }
-  if(!isString(name)) throw new Error(`You must pass in a string as name, but not ${typeof name}`);
+  if (!isString(name)) throw new Error(`You must pass in a string as name, but not ${typeof name}`);
   const {keyOnly = false} = option || {};
-  for(let i = 0; i < SYNONYMS.length; i++) {
+  for (let i = 0; i < SYNONYMS.length; i++) {
     name = name.replace(SYNONYMS[i][0], SYNONYMS[i][1]);
-    for(let j = 0; j < VENDOR_PREFIXES.length; j++) {
+    for (let j = 0; j < VENDOR_PREFIXES.length; j++) {
       const prefixed = j === 0
         ? name
         : (VENDOR_PREFIXES[j] + name.charAt(0).toUpperCase() + name.substr(1));
       // $FlowFixMe: we support document computed property here
-      if(target[prefixed] !== undefined) return keyOnly ? prefixed : target[prefixed];
+      if (target[prefixed] !== undefined) return keyOnly ? prefixed : target[prefixed];
     }
   }
   return keyOnly ? '' : undefined;
@@ -85,31 +85,31 @@ class FullScreen {
   }
 
   open (element: Element, {force = false}: {force: boolean} = {}): boolean {
-    if(!isElement(element)) throw new Error(`You should passed in a legal element to requestFullScreen, but not ${typeof element}.`);
-    if(!isPosterityNode(document, element)) throw new Error('You must pass in a HTML element in document.');
+    if (!isElement(element)) throw new Error(`You should passed in a legal element to requestFullScreen, but not ${typeof element}.`);
+    if (!isPosterityNode(document, element)) throw new Error('You must pass in a HTML element in document.');
 
     const originElement = this.fullscreenElement;
-    if(originElement && originElement !== element) {
-      if(!force) return false;
+    if (originElement && originElement !== element) {
+      if (!force) return false;
       this.exit();
     }
-    if(this.isNativelySupport) {
+    if (this.isNativelySupport) {
       // $FlowFixMe: support computed key on HTMLElment here
       element[this._openKey]();
       return true;
     }
     this._savedStyles = Object.keys(DESKTOP_FULLSCREEN_STYLE)
-    .reduce((styles, key) => {
+      .reduce((styles, key) => {
       // $FlowFixMe: support string here
-      styles[key] = element.style[key];
-      return styles;
-    }, {});
+        styles[key] = element.style[key];
+        return styles;
+      }, {});
     setStyle(element, DESKTOP_FULLSCREEN_STYLE);
-    if(document.body) {
+    if (document.body) {
       this._bodyOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
     }
-    if(document.documentElement) {
+    if (document.documentElement) {
       this._htmlOverflow = document.documentElement.style.overflow;
       document.documentElement.style.overflow = 'hidden';
     }
@@ -119,17 +119,17 @@ class FullScreen {
   }
 
   exit () {
-    if(!this.isFullScreen) return false;
-    if(this.isNativelySupport) {
+    if (!this.isFullScreen) return false;
+    if (this.isNativelySupport) {
       // $FlowFixMe: support document computed key here
       document[this._exitKey]();
       return true;
     }
     const element = this._fullscreenElement;
-    if(!isElement(element)) return false;
+    if (!isElement(element)) return false;
     setStyle(element, this._savedStyles);
-    if(document.body) document.body.style.overflow = this._bodyOverflow;
-    if(document.documentElement) document.documentElement.style.overflow = this._htmlOverflow;
+    if (document.body) document.body.style.overflow = this._bodyOverflow;
+    if (document.documentElement) document.documentElement.style.overflow = this._htmlOverflow;
     this._fullscreenElement = null;
     this._savedStyles = {};
     this._dispatchEvent(element);
@@ -144,28 +144,28 @@ class FullScreen {
         bubbles: true,
         cancelable: true
       });
-    } else if(document.createEvent) {
+    } else if (document.createEvent) {
       event = document.createEvent('HTMLEvents');
       event.initEvent(eventName, true, true);
-    } else if(document.createEventObject) {
+    } else if (document.createEventObject) {
       // $FlowFixMe: IE < 9
       event = document.createEventObject();
       event.eventType = eventName;
       event.eventName = eventName;
     }
-    if(!isObject(event) && !isEvent(event)) throw new Error("We can't create an object on this browser, please report to author");
-    if(element.dispatchEvent) {
+    if (!isObject(event) && !isEvent(event)) throw new Error("We can't create an object on this browser, please report to author");
+    if (element.dispatchEvent) {
       element.dispatchEvent(event);
     // $FlowFixMe: IE < 9
-    } else if(element.fireEvent) {
+    } else if (element.fireEvent) {
       // $FlowFixMe: IE < 9
       element.fireEvent('on' + event.eventType, event);// can trigger only real event (e.g. 'click')
     // $FlowFixMe: support computed key
-    } else if(element[eventName]) {
+    } else if (element[eventName]) {
       // $FlowFixMe: support computed key
       element[eventName]();
     // $FlowFixMe: support computed key
-    } else if(element['on' + eventName]) {
+    } else if (element['on' + eventName]) {
       // $FlowFixMe: support computed key
       element['on' + eventName]();
     }
