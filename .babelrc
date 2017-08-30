@@ -1,12 +1,8 @@
 {
  "presets": [
     "flow",
-    ["env", {
-      "modules": false,
-      "test": {
-        "plugins": [ "istanbul" ]
-      }
-    }],
+    ["env", {"modules": false}],
+    "es2015",
     "stage-0"
   ],
   "plugins": []

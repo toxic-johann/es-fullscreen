@@ -1,19 +1,23 @@
 {
   "globals": {
-    "process": true
+    "process": true,
+    "test": true,
+    "expect": true,
+    "jest": true,
+    "describe": true
   },
   "env": {
     "browser": true,
     "commonjs": true,
-    "es6": true
+    "es6": true,
+    "jest/globals": true
   },
   "extends": [
-    "plugin:flowtype/recommended",
-    "mocha"
+    "plugin:flowtype/recommended"
   ],
   "plugins": [
     "flowtype",
-    "mocha"
+    "jest"
   ],
   "parser": "babel-eslint",
   "parserOptions": {
@@ -311,7 +315,6 @@
     // 不要求正则表达式被括号括起来
     "wrap-regex": 0,
     // 比较时，变量值必须放在首位
-    "yoda": [2, "never"],
-    "mocha/no-exclusive-tests": "error"
+    "yoda": [2, "never"]
   }
 }
