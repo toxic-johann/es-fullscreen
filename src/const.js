@@ -13,7 +13,9 @@ export const DESKTOP_FULLSCREEN_STYLE = {
   top: 0,
   right: 0,
   bottom: 0,
-  overflow: 'hidden'
+  overflow: 'hidden',
+  width: '100%',
+  height: '100%'
 };
 
 export const FULLSCREEN_CHANGE = [
