@@ -68,10 +68,12 @@ class ESFullScreen {
       }, {});
     setStyle(element, DESKTOP_FULLSCREEN_STYLE);
 
+    /* istanbul ignore else  */
     if (document.body) {
       this._bodyOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
     }
+    /* istanbul ignore else  */
     if (document.documentElement) {
       this._htmlOverflow = document.documentElement.style.overflow;
       document.documentElement.style.overflow = 'hidden';
@@ -90,12 +92,12 @@ class ESFullScreen {
       document[this._exitKey]();
       return true;
     }
-
-    const element = this._fullscreenElement;
-    if (!isElement(element)) return false;
+    // $FlowFixMe: element is an Elment here
+    const element: Element = this._fullscreenElement;
     setStyle(element, this._savedStyles);
-
+    /* istanbul ignore else  */
     if (document.body) document.body.style.overflow = this._bodyOverflow;
+    /* istanbul ignore else  */
     if (document.documentElement) document.documentElement.style.overflow = this._htmlOverflow;
 
     this._fullscreenElement = null;
@@ -117,8 +119,8 @@ class ESFullScreen {
   _handleEvent (element: Element | Document, behavior: string, name: string, fn: Function) {
     /* istanbul ignore else  */
     if(process.env.NODE_ENV !== 'production') {
-      if(name !== 'fullscreenchange' && name !== 'fullscreenerror') throw new Error(`${this.constructor.name} only handle "fullscreenchange" and "fullscreenerror" event, but not ${name}. Pleas pass in an right event name`);
-      if(!isFunction(fn)) throw new Error(`You must pass in an legal function, but not ${typeof fn}`);
+      if(name !== 'fullscreenchange' && name !== 'fullscreenerror') throw new Error(`${this.constructor.name} only handle "fullscreenchange" and "fullscreenerror" event, but not ${name}. Pleas pass in an right event name.`);
+      if(!isFunction(fn)) throw new Error(`You must pass in an legal function, but not ${typeof fn}.`);
       if(!isElement(element) && element !== document) throw new Error(`You should passed in a legal element, but not ${typeof element}.`);
     }
     const names = name === 'fullscreenchange'
