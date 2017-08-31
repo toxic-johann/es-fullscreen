@@ -2,10 +2,10 @@
 import {defined, isElement, isPosterityNode, isFunction} from 'toxic-predicate-functions';
 import {DESKTOP_FULLSCREEN_STYLE, FULLSCREEN_CHANGE, FULLSCREEN_ERROR} from './const';
 import {setStyle, native, dispatchEvent} from './utils';
-import {autobindClass, alias} from 'toxic-decorators';
+// import {autobindClass, alias} from 'toxic-decorators';
 const fullscreenEnabled = native('fullscreenEnabled');
 
-@autobindClass()
+// @autobindClass()
 class ESFullScreen {
   _fullscreenElement: HTMLElement | null;
   _openKey: string;
@@ -39,7 +39,7 @@ class ESFullScreen {
     return isElement(this.fullscreenElement);
   }
 
-  @alias('requestFullscreen')
+  // @alias('requestFullscreen')
   open (element: Element, {force = false}: {force: boolean} = {}): boolean {
     /* istanbul ignore else  */
     if(process.env.NODE_ENV !== 'production') {
@@ -84,7 +84,7 @@ class ESFullScreen {
     return true;
   }
 
-  @alias('exitFullscreen')
+  // @alias('exitFullscreen')
   exit () {
     if (!this.isFullscreen) return false;
     if (this.isNativelySupport) {
@@ -106,12 +106,12 @@ class ESFullScreen {
     return true;
   }
 
-  @alias('addEventListener')
+  // @alias('addEventListener')
   on (name: string, fn: Function, element?: Element | Document = document) {
     this._handleEvent(element, 'addEventListener', name, fn);
   }
 
-  @alias('removeEventListener')
+  // @alias('removeEventListener')
   off (name: string, fn: Function, element?: Element | Document = document) {
     this._handleEvent(element, 'removeEventListener', name, fn);
   }
