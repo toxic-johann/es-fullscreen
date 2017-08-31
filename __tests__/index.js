@@ -1,5 +1,5 @@
 import fullscreen from '../src/index.js';
-describe('base test', () => {
+describe(`base test when fullscreen.isNativelySupport is ${fullscreen.isNativelySupport}.`, () => {
   let node1, node2;
   beforeEach(() => {
     node1 = document.createElement('div');
@@ -55,6 +55,32 @@ describe('base test', () => {
   });
 
   test('useless exit', () => {
+    fullscreen.exit();
+  });
+
+  test('fullscreenchange event', () => {
+    const fn = jest.fn();
+    fullscreen.on('fullscreenchange', fn);
+    fullscreen.open(node1);
+    expect(fn).toHaveBeenCalledTimes(1);
+    fullscreen.exit();
+    expect(fn).toHaveBeenCalledTimes(2);
+    fullscreen.off('fullscreenchange', fn);
+    fullscreen.open(node1);
+    expect(fn).toHaveBeenCalledTimes(2);
+    fullscreen.exit();
+    expect(fn).toHaveBeenCalledTimes(2);
+  });
+
+  test('fullscreenerror event', () => {
+    const fn = jest.fn();
+    fullscreen.on('fullscreenerror', fn);
+    fullscreen.open(node1);
+    fullscreen.open(node2);
+    expect(fn).toHaveBeenCalledTimes(1);
+    fullscreen.off('fullscreenerror', fn);
+    fullscreen.open(node2);
+    expect(fn).toHaveBeenCalledTimes(1);
     fullscreen.exit();
   });
 
