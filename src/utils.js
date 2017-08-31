@@ -23,8 +23,8 @@ export function native (target: HTMLElement | string | Object | null, name?: str
   if (!isElement(target)) {
     target = document;
   }
-  if (!isString(name)) throw new Error(`You must pass in a string as name, but not ${typeof name}`);
-  const {keyOnly = false} = option || {};
+  if (!isString(name)) throw new Error(`You must pass in a string as name, but not ${typeof name}.`);
+  const {keyOnly = false} = option;
   for (let i = 0; i < SYNONYMS.length; i++) {
     name = name.replace(SYNONYMS[i][0], SYNONYMS[i][1]);
     for (let j = 0; j < VENDOR_PREFIXES.length; j++) {
@@ -46,6 +46,7 @@ export function dispatchEvent (element: Element | Document, name: string, {
   cancelable?: boolean
 } = {}) {
   let event;
+  /* istanbul ignore else  */
   if (isFunction(Event)) {
     event = new Event(name, {
       bubbles,
@@ -60,7 +61,9 @@ export function dispatchEvent (element: Element | Document, name: string, {
     event.eventType = name;
     event.eventName = name;
   }
+  /* istanbul ignore next  */
   if (!isObject(event) && !isEvent(event)) throw new Error("We can't create an object on this browser, please report to author");
+  /* istanbul ignore else  */
   if (element.dispatchEvent) {
     element.dispatchEvent(event);
   // $FlowFixMe: IE < 9
