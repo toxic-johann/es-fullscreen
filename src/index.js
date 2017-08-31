@@ -1,56 +1,9 @@
 // @flow
-import {defined, isElement, isPosterityNode, isObject, isString, isFunction, isEvent} from 'toxic-predicate-functions';
-const VENDOR_PREFIXES = ['', 'o', 'ms', 'moz', 'webkit', 'webkitCurrent'];
-const SYNONYMS = [
-  ['', ''], // empty
-  ['exit', 'cancel'], // firefox & old webkits expect cancelFullScreen instead of exitFullscreen
-  ['screen', 'Screen'] // firefox expects FullScreen instead of Fullscreen
-];
-const DESKTOP_FULLSCREEN_STYLE = {
-  position: 'fixed',
-  zIndex: '2147483647',
-  left: 0,
-  top: 0,
-  right: 0,
-  bottom: 0,
-  overflow: 'hidden'
-};
-function setStyle (el: Element, key: string | Object, val?: string) {
-  if (isObject(key)) {
-    for (const k in key) {
-      setStyle(el, k, key[k]);
-    }
-  } else {
-    // $FlowFixMe: we found it
-    el.style[key] = val;
-  }
-}
-
-function native (target: HTMLElement | string | Object | null, name?: string | Object, option?: {keyOnly?: boolean} = {}) {
-  if (isObject(name)) {
-    option = name;
-  }
-  if (isString(target)) {
-    name = target;
-  }
-  if (!isElement(target)) {
-    target = document;
-  }
-  if (!isString(name)) throw new Error(`You must pass in a string as name, but not ${typeof name}`);
-  const {keyOnly = false} = option || {};
-  for (let i = 0; i < SYNONYMS.length; i++) {
-    name = name.replace(SYNONYMS[i][0], SYNONYMS[i][1]);
-    for (let j = 0; j < VENDOR_PREFIXES.length; j++) {
-      const prefixed = j === 0
-        ? name
-        : (VENDOR_PREFIXES[j] + name.charAt(0).toUpperCase() + name.substr(1));
-      // $FlowFixMe: we support document computed property here
-      if (target[prefixed] !== undefined) return keyOnly ? prefixed : target[prefixed];
-    }
-  }
-  return keyOnly ? '' : undefined;
-}
+import {defined, isElement, isPosterityNode} from 'toxic-predicate-functions';
+import {DESKTOP_FULLSCREEN_STYLE} from './const';
+import {setStyle, native, dispatchEvent} from './utils';
 const fullscreenEnabled = native('fullscreenEnabled');
+
 class FullScreen {
   _fullscreenElement: HTMLElement | null;
   _openKey: string;
@@ -114,7 +67,7 @@ class FullScreen {
       document.documentElement.style.overflow = 'hidden';
     }
     this._fullscreenElement = element;
-    this._dispatchEvent(element);
+    dispatchEvent(element, 'fullscreenchange');
     return true;
   }
 
@@ -132,43 +85,8 @@ class FullScreen {
     if (document.documentElement) document.documentElement.style.overflow = this._htmlOverflow;
     this._fullscreenElement = null;
     this._savedStyles = {};
-    this._dispatchEvent(element);
+    dispatchEvent(element, 'fullscreenchange');
     return true;
-  }
-
-  _dispatchEvent (element: Element) {
-    let event;
-    const eventName = 'fullscreenchange';
-    if (isFunction(Event)) {
-      event = new Event('fullscreenchange', {
-        bubbles: true,
-        cancelable: true
-      });
-    } else if (document.createEvent) {
-      event = document.createEvent('HTMLEvents');
-      event.initEvent(eventName, true, true);
-    } else if (document.createEventObject) {
-      // $FlowFixMe: IE < 9
-      event = document.createEventObject();
-      event.eventType = eventName;
-      event.eventName = eventName;
-    }
-    if (!isObject(event) && !isEvent(event)) throw new Error("We can't create an object on this browser, please report to author");
-    if (element.dispatchEvent) {
-      element.dispatchEvent(event);
-    // $FlowFixMe: IE < 9
-    } else if (element.fireEvent) {
-      // $FlowFixMe: IE < 9
-      element.fireEvent('on' + event.eventType, event);// can trigger only real event (e.g. 'click')
-    // $FlowFixMe: support computed key
-    } else if (element[eventName]) {
-      // $FlowFixMe: support computed key
-      element[eventName]();
-    // $FlowFixMe: support computed key
-    } else if (element['on' + eventName]) {
-      // $FlowFixMe: support computed key
-      element['on' + eventName]();
-    }
   }
 }
 
