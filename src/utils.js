@@ -38,7 +38,7 @@ export function native (target: HTMLElement | string | Object | null, name?: str
   return keyOnly ? '' : undefined;
 }
 
-export function dispatchEvent (element: Element, name: string, {
+export function dispatchEvent (element: Element | Document, name: string, {
   bubbles = true,
   cancelable = true
 }: {

@@ -1,17 +1,19 @@
 // @flow
-import {defined, isElement, isPosterityNode} from 'toxic-predicate-functions';
-import {DESKTOP_FULLSCREEN_STYLE} from './const';
+import {defined, isElement, isPosterityNode, isFunction} from 'toxic-predicate-functions';
+import {DESKTOP_FULLSCREEN_STYLE, FULLSCREEN_CHANGE, FULLSCREEN_ERROR} from './const';
 import {setStyle, native, dispatchEvent} from './utils';
+import {autobindClass, alias} from 'toxic-decorators';
 const fullscreenEnabled = native('fullscreenEnabled');
 
-class FullScreen {
+@autobindClass()
+class ESFullScreen {
   _fullscreenElement: HTMLElement | null;
   _openKey: string;
   _exitKey: string;
   _savedStyles: Object;
   _bodyOverflow: string;
   _htmlOverflow: string;
-  isFullScreen: boolean;
+  isFullscreen: boolean;
   isNativelySupport: boolean;
 
   _fullscreenElement = null;
@@ -33,19 +35,26 @@ class FullScreen {
     return element || this._fullscreenElement;
   }
 
-  get isFullScreen (): boolean {
+  get isFullscreen (): boolean {
     return isElement(this.fullscreenElement);
   }
 
+  @alias('requestFullscreen')
   open (element: Element, {force = false}: {force: boolean} = {}): boolean {
-    if (!isElement(element)) throw new Error(`You should passed in a legal element to requestFullScreen, but not ${typeof element}.`);
-    if (!isPosterityNode(document, element)) throw new Error('You must pass in a HTML element in document.');
-
+    /* istanbul ignore else  */
+    if(process.env.NODE_ENV !== 'production') {
+      if (!isElement(element)) throw new Error(`You should passed in a legal element to requestFullScreen, but not ${typeof element}.`);
+      if (!isPosterityNode(document, element)) throw new Error('You must pass in a HTML element in document.');
+    }
     const originElement = this.fullscreenElement;
     if (originElement && originElement !== element) {
-      if (!force) return false;
+      if (!force) {
+        dispatchEvent(document, 'fullscreenerror');
+        return false;
+      }
       this.exit();
     }
+
     if (this.isNativelySupport) {
       // $FlowFixMe: support computed key on HTMLElment here
       element[this._openKey]();
@@ -53,11 +62,12 @@ class FullScreen {
     }
     this._savedStyles = Object.keys(DESKTOP_FULLSCREEN_STYLE)
       .reduce((styles, key) => {
-      // $FlowFixMe: support string here
+        // $FlowFixMe: support string here
         styles[key] = element.style[key];
         return styles;
       }, {});
     setStyle(element, DESKTOP_FULLSCREEN_STYLE);
+
     if (document.body) {
       this._bodyOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
@@ -66,28 +76,59 @@ class FullScreen {
       this._htmlOverflow = document.documentElement.style.overflow;
       document.documentElement.style.overflow = 'hidden';
     }
+
     this._fullscreenElement = element;
     dispatchEvent(element, 'fullscreenchange');
     return true;
   }
 
+  @alias('exitFullscreen')
   exit () {
-    if (!this.isFullScreen) return false;
+    if (!this.isFullscreen) return false;
     if (this.isNativelySupport) {
       // $FlowFixMe: support document computed key here
       document[this._exitKey]();
       return true;
     }
+
     const element = this._fullscreenElement;
     if (!isElement(element)) return false;
     setStyle(element, this._savedStyles);
+
     if (document.body) document.body.style.overflow = this._bodyOverflow;
     if (document.documentElement) document.documentElement.style.overflow = this._htmlOverflow;
+
     this._fullscreenElement = null;
     this._savedStyles = {};
     dispatchEvent(element, 'fullscreenchange');
     return true;
   }
+
+  @alias('addEventListener')
+  on (name: string, fn: Function, element?: Element | Document = document) {
+    this._handleEvent(element, 'addEventListener', name, fn);
+  }
+
+  @alias('removeEventListener')
+  off (name: string, fn: Function, element?: Element | Document = document) {
+    this._handleEvent(element, 'removeEventListener', name, fn);
+  }
+
+  _handleEvent (element: Element | Document, behavior: string, name: string, fn: Function) {
+    /* istanbul ignore else  */
+    if(process.env.NODE_ENV !== 'production') {
+      if(name !== 'fullscreenchange' && name !== 'fullscreenerror') throw new Error(`${this.constructor.name} only handle "fullscreenchange" and "fullscreenerror" event, but not ${name}. Pleas pass in an right event name`);
+      if(!isFunction(fn)) throw new Error(`You must pass in an legal function, but not ${typeof fn}`);
+      if(!isElement(element) && element !== document) throw new Error(`You should passed in a legal element, but not ${typeof element}.`);
+    }
+    const names = name === 'fullscreenchange'
+      ? FULLSCREEN_CHANGE
+      : FULLSCREEN_ERROR;
+    names.forEach(name => {
+      // $FlowFixMe: support computed attribute here
+      element[behavior](name, fn);
+    });
+  }
 }
 
-export default new FullScreen();
+export default new ESFullScreen();

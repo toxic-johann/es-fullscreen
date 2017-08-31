@@ -17,7 +17,7 @@ const babelConfig = {
       ['env', {modules: false}],
       'stage-0'
     ],
-    plugins: ['transform-runtime'],
+    plugins: ['transform-runtime', 'transform-decorators-legacy'],
     runtimeHelpers: true,
     exclude: 'node_modules/**',
     babelrc: false
@@ -28,26 +28,26 @@ const babelConfig = {
       ['env', {modules: false}],
       'stage-0'
     ],
-    plugins: ['transform-runtime'],
+    plugins: ['transform-runtime', 'transform-decorators-legacy'],
     runtimeHelpers: true,
     exclude: 'node_modules/**',
     babelrc: false
   },
   umd: {
     presets: ['flow', 'es2015-rollup', 'stage-0'],
-    plugins: [],
+    plugins: ['transform-decorators-legacy'],
     exclude: 'node_modules/**',
     babelrc: false
   },
   iife: {
     presets: ['flow', 'es2015-rollup', 'stage-0'],
-    plugins: [],
+    plugins: ['transform-decorators-legacy'],
     exclude: 'node_modules/**',
     babelrc: false
   },
   min: {
     presets: ['flow', 'es2015-rollup', 'stage-0'],
-    plugins: [],
+    plugins: ['transform-decorators-legacy'],
     exclude: 'node_modules/**',
     babelrc: false
   }

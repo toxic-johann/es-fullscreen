@@ -22,3 +22,8 @@ html, body {
 #node2 {
   background-color: #145265;
 }
+
+#events {
+  padding: 5px;
+  font-size: 1rem;
+}
