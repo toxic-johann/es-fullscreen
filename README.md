@@ -11,7 +11,7 @@
 
 **npm**
 
-You can install through nom.
+You can install through npm.
 
 ```sh
 $ npm install es-fullscreen --save-dev
