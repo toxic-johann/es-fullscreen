@@ -1,10 +1,11 @@
 test('to make it run', () => expect(1).toBe(1));
-export default function tester (esFullscreen) {
+export default function tester(esFullscreen) {
   describe(`base test when esFullscreen.isNativelySupport is ${esFullscreen.isNativelySupport}.`, () => {
-    let node1, node2;
+    let node1,
+      node2;
     beforeEach(() => {
-      function wrap (element) {
-        if(esFullscreen.isNativelySupport) {
+      function wrap(element) {
+        if (esFullscreen.isNativelySupport) {
           element.requestFullscreen = element.requestFullscreen || (() => {
             document.fullscreenElement = element;
             document.dispatchEvent(new Event('fullscreenchange'));
@@ -58,7 +59,7 @@ export default function tester (esFullscreen) {
       esFullscreen.open(node1);
       expect(esFullscreen.isFullscreen).toBe(true);
       expect(esFullscreen.fullscreenElement).toBe(node1);
-      esFullscreen.open(node2, {force: true});
+      esFullscreen.open(node2, { force: true });
       expect(esFullscreen.isFullscreen).toBe(true);
       expect(esFullscreen.fullscreenElement).toBe(node2);
       esFullscreen.exit();

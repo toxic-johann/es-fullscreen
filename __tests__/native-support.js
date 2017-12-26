@@ -1,6 +1,6 @@
 document.fullscreenEnabled = true;
 document.fullscreenElement = null;
-function exitFullscreen () {
+function exitFullscreen() {
   document.fullscreenElement = null;
   document.dispatchEvent(new Event('fullscreenchange'));
 }

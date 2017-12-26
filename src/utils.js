@@ -1,8 +1,13 @@
 // @flow
-import {isObject} from 'toxic-predicate-functions';
-import {VENDOR_PREFIXES, SYNONYMS} from './const';
-import {isElement, isString, isFunction, isEvent} from 'toxic-predicate-functions';
-export function setStyle (el: Element, key: string | Object, val?: string) {
+import { isObject } from 'toxic-predicate-functions';
+import { VENDOR_PREFIXES, SYNONYMS } from './const';
+import { isElement, isString, isFunction, isEvent } from 'toxic-predicate-functions';
+
+export const inBrowser =
+  typeof window !== 'undefined' &&
+  Object.prototype.toString.call(window) !== '[object Object]';
+
+export function setStyle(el: Element, key: string | Object, val?: string) {
   if (isObject(key)) {
     for (const k in key) {
       setStyle(el, k, key[k]);
@@ -11,9 +16,9 @@ export function setStyle (el: Element, key: string | Object, val?: string) {
     // $FlowFixMe: we found it
     el.style[key] = val;
   }
-};
+}
 
-export function native (target: HTMLElement | string | Object | null, name?: string | Object, option?: {keyOnly?: boolean} = {}) {
+export function native(target: HTMLElement | string | Object | null, name?: string | Object, option?: {keyOnly?: boolean} = {}) {
   if (isObject(name)) {
     option = name;
   }
@@ -24,7 +29,7 @@ export function native (target: HTMLElement | string | Object | null, name?: str
     target = document;
   }
   if (!isString(name)) throw new Error(`You must pass in a string as name, but not ${typeof name}.`);
-  const {keyOnly = false} = option;
+  const { keyOnly = false } = option;
   for (let i = 0; i < SYNONYMS.length; i++) {
     name = name.replace(SYNONYMS[i][0], SYNONYMS[i][1]);
     for (let j = 0; j < VENDOR_PREFIXES.length; j++) {
@@ -38,9 +43,9 @@ export function native (target: HTMLElement | string | Object | null, name?: str
   return keyOnly ? '' : undefined;
 }
 
-export function dispatchEvent (element: Element | Document, name: string, {
+export function dispatchEvent(element: Element | Document, name: string, {
   bubbles = true,
-  cancelable = true
+  cancelable = true,
 }: {
   bubbles?: boolean,
   cancelable?: boolean
@@ -50,7 +55,7 @@ export function dispatchEvent (element: Element | Document, name: string, {
   if (isFunction(Event)) {
     event = new Event(name, {
       bubbles,
-      cancelable
+      cancelable,
     });
   } else if (document.createEvent) {
     event = document.createEvent('HTMLEvents');

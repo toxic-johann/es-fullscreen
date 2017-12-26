@@ -1,9 +1,9 @@
-export const VENDOR_PREFIXES = ['', 'o', 'ms', 'moz', 'webkit', 'webkitCurrent'];
+export const VENDOR_PREFIXES = [ '', 'o', 'ms', 'moz', 'webkit', 'webkitCurrent' ];
 
 export const SYNONYMS = [
-  ['', ''], // empty
-  ['exit', 'cancel'], // firefox & old webkits expect cancelFullScreen instead of exitFullscreen
-  ['screen', 'Screen'] // firefox expects FullScreen instead of Fullscreen
+  [ '', '' ], // empty
+  [ 'exit', 'cancel' ], // firefox & old webkits expect cancelFullScreen instead of exitFullscreen
+  [ 'screen', 'Screen' ], // firefox expects FullScreen instead of Fullscreen
 ];
 
 export const DESKTOP_FULLSCREEN_STYLE = {
@@ -15,19 +15,19 @@ export const DESKTOP_FULLSCREEN_STYLE = {
   bottom: 0,
   overflow: 'hidden',
   width: '100%',
-  height: '100%'
+  height: '100%',
 };
 
 export const FULLSCREEN_CHANGE = [
   'fullscreenchange',
   'webkitfullscreenchange',
   'mozfullscreenchange',
-  'MSFullscreenChange'
+  'MSFullscreenChange',
 ];
 
 export const FULLSCREEN_ERROR = [
   'fullscreenerror',
   'webkitfullscreenerror',
   'mozfullscreenerror',
-  'MSFullscreenError'
+  'MSFullscreenError',
 ];

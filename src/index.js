@@ -1,8 +1,8 @@
 // @flow
-import {defined, isElement, isPosterityNode, isFunction} from 'toxic-predicate-functions';
-import {DESKTOP_FULLSCREEN_STYLE, FULLSCREEN_CHANGE, FULLSCREEN_ERROR} from './const';
-import {setStyle, native, dispatchEvent} from './utils';
-import {autobindClass, alias} from 'toxic-decorators';
+import { defined, isElement, isPosterityNode, isFunction } from 'toxic-predicate-functions';
+import { DESKTOP_FULLSCREEN_STYLE, FULLSCREEN_CHANGE, FULLSCREEN_ERROR } from './const';
+import { setStyle, native, dispatchEvent, inBrowser } from './utils';
+import { autobindClass, alias } from 'toxic-decorators';
 const fullscreenEnabled = native('fullscreenEnabled');
 
 @autobindClass()
@@ -19,15 +19,15 @@ class ESFullScreen {
   _fullscreenElement = null;
   isNativelySupport = defined(native('fullscreenElement')) &&
     (!defined(fullscreenEnabled) || fullscreenEnabled === true);
-  _openKey = native(document.body, 'requestFullscreen', {keyOnly: true});
-  _exitKey = native('exitFullscreen', {keyOnly: true});
+  _openKey = native(document.body, 'requestFullscreen', { keyOnly: true });
+  _exitKey = native('exitFullscreen', { keyOnly: true });
 
-  get fullscreenElement (): Element | null {
+  get fullscreenElement(): Element | null {
     const element = [
       'fullscreenElement',
       'webkitFullscreenElement',
       'mozFullScreenElement',
-      'msFullscreenElement'
+      'msFullscreenElement',
     ].reduce((element, key) => {
       // $FlowFixMe: support computed element on document
       return element || document[key];
@@ -35,14 +35,14 @@ class ESFullScreen {
     return element || this._fullscreenElement;
   }
 
-  get isFullscreen (): boolean {
+  get isFullscreen(): boolean {
     return isElement(this.fullscreenElement);
   }
 
   @alias('requestFullscreen')
-  open (element: Element, {force = false}: {force: boolean} = {}): boolean {
+  open(element: Element, { force = false }: {force: boolean} = {}): boolean {
     /* istanbul ignore else  */
-    if(process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       if (!isElement(element)) throw new Error(`You should passed in a legal element to requestFullScreen, but not ${typeof element}.`);
       if (!isPosterityNode(document, element)) throw new Error('You must pass in a HTML element in document.');
     }
@@ -85,7 +85,7 @@ class ESFullScreen {
   }
 
   @alias('exitFullscreen')
-  exit () {
+  exit() {
     if (!this.isFullscreen) return false;
     if (this.isNativelySupport) {
       // $FlowFixMe: support document computed key here
@@ -107,21 +107,21 @@ class ESFullScreen {
   }
 
   @alias('addEventListener')
-  on (name: string, fn: Function, element?: Element | Document = document) {
+  on(name: string, fn: Function, element?: Element | Document = document) {
     this._handleEvent(element, 'addEventListener', name, fn);
   }
 
   @alias('removeEventListener')
-  off (name: string, fn: Function, element?: Element | Document = document) {
+  off(name: string, fn: Function, element?: Element | Document = document) {
     this._handleEvent(element, 'removeEventListener', name, fn);
   }
 
-  _handleEvent (element: Element | Document, behavior: string, name: string, fn: Function) {
+  _handleEvent(element: Element | Document, behavior: string, name: string, fn: Function) {
     /* istanbul ignore else  */
-    if(process.env.NODE_ENV !== 'production') {
-      if(name !== 'fullscreenchange' && name !== 'fullscreenerror') throw new Error(`${this.constructor.name} only handle "fullscreenchange" and "fullscreenerror" event, but not ${name}. Pleas pass in an right event name.`);
-      if(!isFunction(fn)) throw new Error(`You must pass in an legal function, but not ${typeof fn}.`);
-      if(!isElement(element) && element !== document) throw new Error(`You should passed in a legal element, but not ${typeof element}.`);
+    if (process.env.NODE_ENV !== 'production') {
+      if (name !== 'fullscreenchange' && name !== 'fullscreenerror') throw new Error(`${this.constructor.name} only handle "fullscreenchange" and "fullscreenerror" event, but not ${name}. Pleas pass in an right event name.`);
+      if (!isFunction(fn)) throw new Error(`You must pass in an legal function, but not ${typeof fn}.`);
+      if (!isElement(element) && element !== document) throw new Error(`You should passed in a legal element, but not ${typeof element}.`);
     }
     const names = name === 'fullscreenchange'
       ? FULLSCREEN_CHANGE
@@ -132,5 +132,5 @@ class ESFullScreen {
     });
   }
 }
-
-export default new ESFullScreen();
+/* istanbul ignore */
+export default inBrowser ? new ESFullScreen() : {};
