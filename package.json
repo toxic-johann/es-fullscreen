@@ -1,6 +1,6 @@
 {
   "name": "es-fullscreen",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "fullscreen library written in es6",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -9,7 +9,7 @@
   "scripts": {
     "precommit": "npm run lint && npm test",
     "postmerge": "",
-    "test": "jest --coverage",
+    "test": "jest --coverage && node env-check.js",
     "unit": "jest --watch --coverage",
     "lint": "eslint . --fix && flow",
     "flow": "flow",

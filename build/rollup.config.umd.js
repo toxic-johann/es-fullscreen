@@ -8,6 +8,6 @@ export default Object.assign(config, {
   output: {
     format: 'umd',
     file: 'lib/index.browser.js',
+    name: 'esFullscreen',
   },
-  name: 'esFullscreen',
 });

@@ -3,7 +3,7 @@ import { defined, isElement, isPosterityNode, isFunction } from 'toxic-predicate
 import { DESKTOP_FULLSCREEN_STYLE, FULLSCREEN_CHANGE, FULLSCREEN_ERROR } from './const';
 import { setStyle, native, dispatchEvent, inBrowser } from './utils';
 import { autobindClass, alias } from 'toxic-decorators';
-const fullscreenEnabled = native('fullscreenEnabled');
+const fullscreenEnabled = inBrowser ? native('fullscreenEnabled') : false;
 
 @autobindClass()
 class ESFullScreen {
