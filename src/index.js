@@ -17,10 +17,12 @@ class ESFullScreen {
   isNativelySupport: boolean;
 
   _fullscreenElement = null;
-  isNativelySupport = defined(native('fullscreenElement')) &&
-    (!defined(fullscreenEnabled) || fullscreenEnabled === true);
-  _openKey = native(document.body, 'requestFullscreen', { keyOnly: true });
-  _exitKey = native('exitFullscreen', { keyOnly: true });
+  isNativelySupport = inBrowser
+    ? (defined(native('fullscreenElement')) &&
+    (!defined(fullscreenEnabled) || fullscreenEnabled === true))
+    : false;
+  _openKey = inBrowser ? native(document.body, 'requestFullscreen', { keyOnly: true }) : '';
+  _exitKey = inBrowser ? native('exitFullscreen', { keyOnly: true }) : '';
 
   get fullscreenElement(): Element | null {
     const element = [
@@ -132,5 +134,4 @@ class ESFullScreen {
     });
   }
 }
-/* istanbul ignore */
-export default inBrowser ? new ESFullScreen() : {};
+export default new ESFullScreen();
