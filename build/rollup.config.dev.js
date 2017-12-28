@@ -17,6 +17,6 @@ export default Object.assign(config, {
   output: {
     format: 'iife',
     file: 'lib/index.dev.js',
+    name: camelize(name),
   },
-  name: camelize(name),
 });
