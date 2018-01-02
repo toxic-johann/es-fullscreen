@@ -1,10 +1,10 @@
 // @flow
 import { defined, isElement, isPosterityNode, isFunction } from 'toxic-predicate-functions';
 import { DESKTOP_FULLSCREEN_STYLE, FULLSCREEN_CHANGE, FULLSCREEN_ERROR } from './const';
-import { setStyle, native, dispatchEvent, inBrowser } from './utils';
-import { autobindClass, alias, runnable } from 'toxic-decorators';
+import { setStyle, native, dispatchEvent } from './utils';
+import { autobindClass, alias } from 'toxic-decorators';
 /* istanbul ignore next  */
-const fullscreenEnabled = inBrowser ? native('fullscreenEnabled') : false;
+const fullscreenEnabled = native('fullscreenEnabled');
 
 @autobindClass()
 class ESFullScreen {
@@ -18,14 +18,11 @@ class ESFullScreen {
   isNativelySupport: boolean;
   inBrowser: boolean;
 
-  inBrowser = inBrowser;
   _fullscreenElement = null;
-  isNativelySupport = /* istanbul ignore next  */ inBrowser
-    ? (defined(native('fullscreenElement')) &&
-    (!defined(fullscreenEnabled) || fullscreenEnabled === true))
-    : false;
-  _openKey = /* istanbul ignore next  */ inBrowser ? native(document.body, 'requestFullscreen', { keyOnly: true }) : '';
-  _exitKey = /* istanbul ignore next  */ inBrowser ? native('exitFullscreen', { keyOnly: true }) : '';
+  isNativelySupport = (defined(native('fullscreenElement')) &&
+    (!defined(fullscreenEnabled) || fullscreenEnabled === true));
+  _openKey = native(document.body, 'requestFullscreen', { keyOnly: true });
+  _exitKey = native('exitFullscreen', { keyOnly: true });
 
   get fullscreenElement(): Element | null {
     const element = [
@@ -44,7 +41,6 @@ class ESFullScreen {
     return isElement(this.fullscreenElement);
   }
 
-  @runnable('inBrowser')
   @alias('requestFullscreen')
   open(element: Element, { force = false }: {force: boolean} = {}): boolean {
     /* istanbul ignore else  */
@@ -90,7 +86,6 @@ class ESFullScreen {
     return true;
   }
 
-  @runnable('inBrowser')
   @alias('exitFullscreen')
   exit() {
     if (!this.isFullscreen) return false;
@@ -113,13 +108,11 @@ class ESFullScreen {
     return true;
   }
 
-  @runnable('inBrowser')
   @alias('addEventListener')
   on(name: string, fn: Function, element?: Element | Document = document) {
     this._handleEvent(element, 'addEventListener', name, fn);
   }
 
-  @runnable('inBrowser')
   @alias('removeEventListener')
   off(name: string, fn: Function, element?: Element | Document = document) {
     this._handleEvent(element, 'removeEventListener', name, fn);
