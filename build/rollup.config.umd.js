@@ -1,4 +1,4 @@
-import base from './rollup.config.base';
+import base, { banner } from './rollup.config.base';
 import replace from 'rollup-plugin-replace';
 const config = base('umd');
 config.plugins.unshift(replace({
@@ -9,5 +9,6 @@ export default Object.assign(config, {
     format: 'umd',
     file: 'lib/index.browser.js',
     name: 'esFullscreen',
+    banner,
   },
 });

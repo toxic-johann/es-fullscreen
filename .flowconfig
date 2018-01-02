@@ -8,5 +8,4 @@
 flow
 node_modules/toxic-predicate-functions/lib/index.flow.js
 [options]
-unsafe.enable_getters_and_setters=true
 esproposal.decorators=ignore

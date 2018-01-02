@@ -1,4 +1,4 @@
-import base from './rollup.config.base';
+import base, { banner } from './rollup.config.base';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
 import replace from 'rollup-plugin-replace';
@@ -18,5 +18,6 @@ export default Object.assign(config, {
     format: 'iife',
     file: 'lib/index.dev.js',
     name: camelize(name),
+    banner,
   },
 });
