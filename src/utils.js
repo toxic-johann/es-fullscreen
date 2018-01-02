@@ -3,9 +3,7 @@ import { isObject } from 'toxic-predicate-functions';
 import { VENDOR_PREFIXES, SYNONYMS } from './const';
 import { isElement, isString, isFunction, isEvent } from 'toxic-predicate-functions';
 
-export const inBrowser =
-  typeof window !== 'undefined' &&
-  Object.prototype.toString.call(window) !== '[object Object]';
+export const supportDocument = typeof document !== 'undefined';
 
 export function setStyle(el: Element, key: string | Object, val?: string) {
   if (isObject(key)) {
@@ -25,11 +23,15 @@ export function native(target: HTMLElement | string | Object | null, name?: stri
   if (isString(target)) {
     name = target;
   }
+  const { keyOnly = false } = option;
+  /* istanbul ignore if */
+  if (!supportDocument) {
+    return keyOnly ? '' : undefined;
+  }
   if (!isElement(target)) {
     target = document;
   }
   if (!isString(name)) throw new Error(`You must pass in a string as name, but not ${typeof name}.`);
-  const { keyOnly = false } = option;
   for (let i = 0; i < SYNONYMS.length; i++) {
     name = name.replace(SYNONYMS[i][0], SYNONYMS[i][1]);
     for (let j = 0; j < VENDOR_PREFIXES.length; j++) {
@@ -57,10 +59,10 @@ export function dispatchEvent(element: Element | Document, name: string, {
       bubbles,
       cancelable,
     });
-  } else if (document.createEvent) {
+  } else if (supportDocument && document.createEvent) {
     event = document.createEvent('HTMLEvents');
     event.initEvent(name, true, true);
-  } else if (document.createEventObject) {
+  } else if (supportDocument && document.createEventObject) {
     // $FlowFixMe: IE < 9
     event = document.createEventObject();
     event.eventType = name;

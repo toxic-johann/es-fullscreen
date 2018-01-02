@@ -1,9 +1,8 @@
 // @flow
 import { defined, isElement, isPosterityNode, isFunction } from 'toxic-predicate-functions';
 import { DESKTOP_FULLSCREEN_STYLE, FULLSCREEN_CHANGE, FULLSCREEN_ERROR } from './const';
-import { setStyle, native, dispatchEvent } from './utils';
+import { setStyle, native, dispatchEvent, supportDocument } from './utils';
 import { autobindClass, alias } from 'toxic-decorators';
-/* istanbul ignore next  */
 const fullscreenEnabled = native('fullscreenEnabled');
 
 @autobindClass()
@@ -16,12 +15,11 @@ class ESFullScreen {
   _htmlOverflow: string;
   isFullscreen: boolean;
   isNativelySupport: boolean;
-  inBrowser: boolean;
 
   _fullscreenElement = null;
   isNativelySupport = (defined(native('fullscreenElement')) &&
     (!defined(fullscreenEnabled) || fullscreenEnabled === true));
-  _openKey = native(document.body, 'requestFullscreen', { keyOnly: true });
+  _openKey = supportDocument ? native(document.body, 'requestFullscreen', { keyOnly: true }) : '';
   _exitKey = native('exitFullscreen', { keyOnly: true });
 
   get fullscreenElement(): Element | null {
@@ -80,7 +78,6 @@ class ESFullScreen {
       this._htmlOverflow = document.documentElement.style.overflow;
       document.documentElement.style.overflow = 'hidden';
     }
-
     this._fullscreenElement = element;
     dispatchEvent(element, 'fullscreenchange');
     return true;
