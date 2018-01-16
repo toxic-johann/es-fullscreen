@@ -61,4 +61,4 @@ typings/
 .coveralls.yml
 
 lib/index.dev.js
-.package-lock.json
+package-lock.json

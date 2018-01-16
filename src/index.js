@@ -19,7 +19,7 @@ class ESFullScreen {
   _fullscreenElement = null;
   isNativelySupport = (defined(native('fullscreenElement')) &&
     (!defined(fullscreenEnabled) || fullscreenEnabled === true));
-  _openKey = supportDocument ? native(document.body, 'requestFullscreen', { keyOnly: true }) : '';
+  _openKey = supportDocument ? native(document.body || document.documentElement, 'requestFullscreen', { keyOnly: true }) : '';
   _exitKey = native('exitFullscreen', { keyOnly: true });
 
   get fullscreenElement(): Element | null {
