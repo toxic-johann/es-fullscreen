@@ -57,9 +57,21 @@ class ESFullScreen {
 
     if (this.isNativelySupport) {
       // $FlowFixMe: support computed key on HTMLElment here
-      element[this._openKey]();
+      isFunction(element[this._openKey]) && element[this._openKey]();
       return true;
     }
+
+    // add wekitEnterFullscreen support as required in https://github.com/toxic-johann/es-fullscreen/issues/4
+    /* istanbul ignore if  */
+    if (element instanceof HTMLVideoElement &&
+      element.webkitSupportsFullscreen &&
+      // $FlowFixMe: support webkitEnterFullscreen on some werid safari
+      isFunction(element.webkitEnterFullscreen)) {
+      element.webkitEnterFullscreen();
+      this._fullscreenElement = element;
+      return true;
+    }
+
     this._savedStyles = Object.keys(DESKTOP_FULLSCREEN_STYLE)
       .reduce((styles, key) => {
         // $FlowFixMe: support string here
