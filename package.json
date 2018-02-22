@@ -1,6 +1,6 @@
 {
   "name": "es-fullscreen",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "fullscreen library written in es6",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
