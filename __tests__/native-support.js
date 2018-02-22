@@ -12,4 +12,20 @@ document.body.requestFullscreen = document.requestFullscreen || (() => {
 });
 import tester from './base';
 const esFullscreen = require('../src/index.js').default;
-tester(esFullscreen);
+
+describe('use native to test', () => {
+  tester(esFullscreen);
+});
+
+describe('use style event when native is supported', () => {
+  beforeAll(() => {
+    esFullscreen.useStyleFirst = true;
+  });
+
+  tester(esFullscreen);
+
+  afterAll(() => {
+    esFullscreen.useStyleFirst = false;
+  });
+});
+

@@ -11,6 +11,25 @@ setTimeout(() => {
         }
       });
   });
+
+  const button = document.getElementById('method-switch');
+
+  function setButtonText() {
+    const text = esFullscreen.useStyleFirst
+      ? 'use native'
+      : 'use style';
+    button.innerText = text;
+  }
+
+  if (esFullscreen.isNativelySupport) {
+    button.addEventListener('click', () => {
+      esFullscreen.useStyleFirst = !esFullscreen.useStyleFirst;
+      setButtonText();
+    });
+    document.addEventListener('esfullscreenmethodchange', setButtonText);
+  } else {
+    button.style.display = 'none';
+  }
 }, 1000);
 esFullscreen.on('fullscreenchange', evt => {
   const pre = document.createElement('pre');

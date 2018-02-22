@@ -70,7 +70,7 @@ Represent is fullscreen or not.
 * alias
   * addEventListener
 * Arguments
-  * {string} name: event's name, only can be 'fullscreenchange' and 'fullscreenerror'
+  * {string} name: event's name, only can be 'fullscreenchange',  'fullscreenerror' or 'esfullscreenmethodchange' (supported after [0.3.0](https://github.com/toxic-johann/es-fullscreen/releases/tag/0.3.0))
   * {Function} fn
   * {Element} element: default to be `document`
 * Details
@@ -92,6 +92,18 @@ esFullscreen.open(document.body); // change!
 * Details
 
 Totally the same as `on`.
+
+### useStyleFirst
+
+> supported after [0.3.0](https://github.com/toxic-johann/es-fullscreen/releases/tag/0.4.0)
+
+* type
+  * boolean
+* default
+  * `false`
+* Details
+
+When it's true, we will use style to fullscreen but not native way. You can change it and it will emit 'esfullscreenmethodchange' event.
 
 ## Changelog
 

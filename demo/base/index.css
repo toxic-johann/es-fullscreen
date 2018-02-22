@@ -30,3 +30,9 @@ html, body {
   padding: 5px;
   font-size: 1rem;
 }
+
+button {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+}
