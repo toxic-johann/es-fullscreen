@@ -95,7 +95,7 @@ Totally the same as `on`.
 
 ### useStyleFirst
 
-> supported after [0.3.0](https://github.com/toxic-johann/es-fullscreen/releases/tag/0.4.0)
+> supported after [0.3.0](https://github.com/toxic-johann/es-fullscreen/releases/tag/0.3.0)
 
 * type
   * boolean
