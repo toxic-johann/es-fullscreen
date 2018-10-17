@@ -1,6 +1,6 @@
-import { SYNONYMS, VENDOR_PREFIXES } from 'const';
 import { isPlainObject, isString } from 'lodash';
 import { isElement, isEvent, isFunction } from 'toxic-predicate-functions';
+import { SYNONYMS, VENDOR_PREFIXES } from './const';
 
 export const supportDocument = typeof document !== 'undefined';
 

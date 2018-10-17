@@ -14,3 +14,4 @@ bundle-size/
 .eslintrc
 karma.config.js
 src
+ts-out/

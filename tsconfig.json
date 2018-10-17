@@ -19,7 +19,6 @@
             "esnext"
         ],
         "declaration": true,
-        "experimentalDecorators": true,
         "esModuleInterop": true
     },
     "include": [

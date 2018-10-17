@@ -1,5 +1,5 @@
 import 'babel-polyfill';
-import esFullscreen from '../../src/index.js';
+import esFullscreen from '../../ts-out/index.js';
 setTimeout(() => {
   [ 1, 2 ].forEach(key => {
     document.getElementById('node' + key)

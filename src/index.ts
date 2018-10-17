@@ -1,11 +1,9 @@
-import { DESKTOP_FULLSCREEN_STYLE, FULLSCREEN_CHANGE, FULLSCREEN_ERROR } from 'const';
-import { alias, autobindClass } from 'toxic-decorators';
 import { defined, isElement, isFunction, isPosterityNode } from 'toxic-predicate-functions';
-import { dispatchEvent, native, setStyle, supportDocument } from 'utils';
+import { DESKTOP_FULLSCREEN_STYLE, FULLSCREEN_CHANGE, FULLSCREEN_ERROR } from './const';
+import { dispatchEvent, native, setStyle, supportDocument } from './utils';
 const fullscreenEnabled = native('fullscreenEnabled');
 let useStyleFirst = false;
 
-@autobindClass()
 class ESFullScreen {
   public _savedStyles: object;
   public _bodyOverflow: string;
@@ -48,7 +46,10 @@ class ESFullScreen {
     return isElement(this.fullscreenElement);
   }
 
-  @alias('requestFullscreen')
+  public requestFullscreen(element: HTMLElement, option: { force?: boolean } = { force: false }): boolean {
+    return this.open(element, option);
+  }
+
   public open(element: HTMLElement, { force = false }: { force?: boolean } = {}): boolean {
     /* istanbul ignore else  */
     if (process.env.NODE_ENV !== 'production') {
@@ -109,7 +110,10 @@ class ESFullScreen {
     return true;
   }
 
-  @alias('exitFullscreen')
+  public exitFullscreen() {
+    return this.exit();
+  }
+
   public exit() {
     if (!this.isFullscreen) { return false; }
     if (this.isNativelySupport &&
@@ -132,12 +136,18 @@ class ESFullScreen {
     return true;
   }
 
-  @alias('addEventListener')
+  public addEventListener(name: string, fn: (...args: any[]) => any, element: HTMLElement | Document = document) {
+    return this.on(name, fn, element);
+  }
+
   public on(name: string, fn: (...args: any[]) => any, element: HTMLElement | Document = document) {
     this._handleEvent(element, 'addEventListener', name, fn);
   }
 
-  @alias('removeEventListener')
+  public removeEventListene(name: string, fn: (...args: any[]) => any, element: HTMLElement | Document = document) {
+    return this.off(name, fn, element);
+  }
+
   public off(name: string, fn: (...args: any[]) => any, element: HTMLElement | Document = document) {
     this._handleEvent(element, 'removeEventListener', name, fn);
   }

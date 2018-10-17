@@ -62,3 +62,4 @@ typings/
 
 lib/index.dev.js
 package-lock.json
+ts-out/
