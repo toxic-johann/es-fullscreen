@@ -13,7 +13,7 @@
     "unit": "jest --watch --coverage",
     "lint": "tslint -c ./tslint.json 'src/**/*.ts' --fix && eslint . --fix",
     "eslint": "eslint . --fix",
-    "start": "rollup -c build/rollup.config.dev.js -w",
+    "start": "tsc --outDir ./ts-out -w & rollup -c build/rollup.config.dev.js -w",
     "build": "npm run tsc && tsc --emitDeclarationOnly true --outDir ./lib && npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
     "b-common": "rollup -c build/rollup.config.common.js",
     "b-es": "rollup -c build/rollup.config.es.js",
