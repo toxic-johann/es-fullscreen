@@ -6,6 +6,7 @@
   "module": "lib/index.mjs",
   "jsnext:main": "lib/index.mjs",
   "browser": "lib/index.browser.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "precommit": "npm run lint && npm test",
     "postmerge": "",
