@@ -1,42 +1,35 @@
-// @flow
-import { defined, isElement, isPosterityNode, isFunction } from 'toxic-predicate-functions';
-import { DESKTOP_FULLSCREEN_STYLE, FULLSCREEN_CHANGE, FULLSCREEN_ERROR } from './const';
-import { setStyle, native, dispatchEvent, supportDocument } from './utils';
-import { autobindClass, alias } from 'toxic-decorators';
+import { DESKTOP_FULLSCREEN_STYLE, FULLSCREEN_CHANGE, FULLSCREEN_ERROR } from 'const';
+import { alias, autobindClass } from 'toxic-decorators';
+import { defined, isElement, isFunction, isPosterityNode } from 'toxic-predicate-functions';
+import { dispatchEvent, native, setStyle, supportDocument } from 'utils';
 const fullscreenEnabled = native('fullscreenEnabled');
 let useStyleFirst = false;
 
 @autobindClass()
 class ESFullScreen {
-  _fullscreenElement: HTMLElement | null;
-  _openKey: string;
-  _exitKey: string;
-  _savedStyles: Object;
-  _bodyOverflow: string;
-  _htmlOverflow: string;
-  isFullscreen: boolean;
-  isNativelySupport: boolean;
-  useStyleFirst: boolean;
-  hasUsedStyle: boolean;
+  public _savedStyles: object;
+  public _bodyOverflow: string;
+  public _htmlOverflow: string;
 
-  _fullscreenElement = null;
-  isNativelySupport = (defined(native('fullscreenElement')) &&
+  public _fullscreenElement: HTMLElement | null = null;
+  public isNativelySupport: boolean = (defined(native('fullscreenElement')) &&
     (!defined(fullscreenEnabled) || fullscreenEnabled === true));
-  _openKey = supportDocument ? native(document.body || document.documentElement, 'requestFullscreen', { keyOnly: true }) : '';
-  _exitKey = native('exitFullscreen', { keyOnly: true });
-  _useStyleFirst = false;
-  hasUsedStyle = false;
+  public _openKey: string = supportDocument
+    ? native(document.body || document.documentElement, 'requestFullscreen', { keyOnly: true })
+    : '';
+  public _exitKey: string = native('exitFullscreen', { keyOnly: true });
+  public _useStyleFirst = false;
+  public hasUsedStyle: boolean = false;
 
   get useStyleFirst(): boolean {
     return useStyleFirst;
   }
 
-  set useStyleFirst(value: boolean): boolean {
+  set useStyleFirst(value: boolean) {
     value = !!value;
-    if (value === useStyleFirst) return value;
+    if (value === useStyleFirst) { return; }
     useStyleFirst = value;
     dispatchEvent(document, 'esfullscreenmethodchange');
-    return value;
   }
 
   get fullscreenElement(): Element | null {
@@ -46,8 +39,7 @@ class ESFullScreen {
       'mozFullScreenElement',
       'msFullscreenElement',
     ].reduce((element, key) => {
-      // $FlowFixMe: support computed element on document
-      return element || document[key];
+      return element || (document as any)[key];
     }, null);
     return element || this._fullscreenElement;
   }
@@ -57,11 +49,13 @@ class ESFullScreen {
   }
 
   @alias('requestFullscreen')
-  open(element: Element, { force = false }: {force: boolean} = {}): boolean {
+  public open(element: HTMLElement, { force = false }: { force?: boolean } = {}): boolean {
     /* istanbul ignore else  */
     if (process.env.NODE_ENV !== 'production') {
-      if (!isElement(element)) throw new Error(`You should passed in a legal element to requestFullScreen, but not ${typeof element}.`);
-      if (!isPosterityNode(document, element)) throw new Error('You must pass in a HTML element in document.');
+      if (!isElement(element)) {
+        throw new Error(`You should passed in a legal element to requestFullScreen, but not ${typeof element}.`);
+      }
+      if (!isPosterityNode(document, element)) { throw new Error('You must pass in a HTML element in document.'); }
     }
     const originElement = this.fullscreenElement;
     if (originElement && originElement !== element) {
@@ -74,8 +68,9 @@ class ESFullScreen {
 
     if (!this.useStyleFirst) {
       if (this.isNativelySupport) {
-        // $FlowFixMe: support computed key on HTMLElment here
-        isFunction(element[this._openKey]) && element[this._openKey]();
+        if (isFunction((element as any)[this._openKey])) {
+          (element as any)[this._openKey]();
+        }
         return true;
       }
 
@@ -93,8 +88,7 @@ class ESFullScreen {
 
     this._savedStyles = Object.keys(DESKTOP_FULLSCREEN_STYLE)
       .reduce((styles, key) => {
-        // $FlowFixMe: support string here
-        styles[key] = element.style[key];
+        (styles as any)[key] = (element.style as any)[key];
         return styles;
       }, {});
     setStyle(element, DESKTOP_FULLSCREEN_STYLE);
@@ -116,22 +110,21 @@ class ESFullScreen {
   }
 
   @alias('exitFullscreen')
-  exit() {
-    if (!this.isFullscreen) return false;
+  public exit() {
+    if (!this.isFullscreen) { return false; }
     if (this.isNativelySupport &&
       !this.useStyleFirst &&
       !this.hasUsedStyle) {
-      // $FlowFixMe: support document computed key here
-      document[this._exitKey]();
+      (document as any)[this._exitKey]();
       return true;
     }
     // $FlowFixMe: element is an Elment here
-    const element: Element = this._fullscreenElement;
+    const element: HTMLElement = this._fullscreenElement;
     setStyle(element, this._savedStyles);
     /* istanbul ignore else  */
-    if (document.body) document.body.style.overflow = this._bodyOverflow;
+    if (document.body) { document.body.style.overflow = this._bodyOverflow; }
     /* istanbul ignore else  */
-    if (document.documentElement) document.documentElement.style.overflow = this._htmlOverflow;
+    if (document.documentElement) { document.documentElement.style.overflow = this._htmlOverflow; }
 
     this._fullscreenElement = null;
     this._savedStyles = {};
@@ -140,33 +133,37 @@ class ESFullScreen {
   }
 
   @alias('addEventListener')
-  on(name: string, fn: Function, element?: Element | Document = document) {
+  public on(name: string, fn: (...args: any[]) => any, element: HTMLElement | Document = document) {
     this._handleEvent(element, 'addEventListener', name, fn);
   }
 
   @alias('removeEventListener')
-  off(name: string, fn: Function, element?: Element | Document = document) {
+  public off(name: string, fn: (...args: any[]) => any, element: HTMLElement | Document = document) {
     this._handleEvent(element, 'removeEventListener', name, fn);
   }
 
-  _handleEvent(element: Element | Document, behavior: string, name: string, fn: Function) {
+  public _handleEvent(element: HTMLElement | Document, behavior: string, name: string, fn: (...args: any[]) => any) {
     /* istanbul ignore else  */
     if (process.env.NODE_ENV !== 'production') {
       if (name !== 'fullscreenchange' &&
         name !== 'fullscreenerror' &&
         name !== 'esfullscreenmethodchange'
-      ) throw new Error(`${this.constructor.name} only handle "fullscreenchange", "fullscreenerror" and "esfullscreenmethodchange" event, but not ${name}. Pleas pass in an right event name.`);
-      if (!isFunction(fn)) throw new Error(`You must pass in an legal function, but not ${typeof fn}.`);
-      if (!isElement(element) && element !== document) throw new Error(`You should passed in a legal element, but not ${typeof element}.`);
+      ) {
+        // tslint:disable-next-line max-line-length
+        throw new Error(`${this.constructor.name} only handle "fullscreenchange", "fullscreenerror" and "esfullscreenmethodchange" event, but not ${name}. Pleas pass in an right event name.`);
+      }
+      if (!isFunction(fn)) { throw new Error(`You must pass in an legal function, but not ${typeof fn}.`); }
+      if (!isElement(element) && element !== document) {
+         throw new Error(`You should passed in a legal element, but not ${typeof element}.`);
+      }
     }
     const names = name === 'fullscreenchange'
       ? FULLSCREEN_CHANGE
       : name === 'fullscreenerror'
         ? FULLSCREEN_ERROR
         : [ name ];
-    names.forEach(name => {
-      // $FlowFixMe: support computed attribute here
-      element[behavior](name, fn);
+    names.forEach((name) => {
+      (element as any)[behavior](name, fn);
     });
   }
 }

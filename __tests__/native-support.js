@@ -11,7 +11,7 @@ document.body.requestFullscreen = document.requestFullscreen || (() => {
   document.dispatchEvent(new Event('fullscreenchange'));
 });
 import tester from './base';
-const esFullscreen = require('../src/index.js').default;
+const esFullscreen = require('../src/index.ts').default;
 
 describe('use native to test', () => {
   tester(esFullscreen);

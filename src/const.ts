@@ -7,15 +7,15 @@ export const SYNONYMS = [
 ];
 
 export const DESKTOP_FULLSCREEN_STYLE = {
-  position: 'fixed',
-  zIndex: '2147483647',
-  left: 0,
-  top: 0,
-  right: 0,
   bottom: 0,
-  overflow: 'hidden',
-  width: '100%',
   height: '100%',
+  left: 0,
+  overflow: 'hidden',
+  position: 'fixed',
+  right: 0,
+  top: 0,
+  width: '100%',
+  zIndex: '2147483647',
 };
 
 export const FULLSCREEN_CHANGE = [
