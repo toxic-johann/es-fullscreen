@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/npm/v/es-fullscreen.svg?colorB=brightgreen&style=flat-square)](https://www.npmjs.com/package/es-fullscreen)
 [![npm download times](https://img.shields.io/npm/dm/es-fullscreen.svg)](https://www.npmjs.com/package/es-fullscreen)
 [![dependency Status](https://david-dm.org/toxic-johann/es-fullscreen.svg)](https://david-dm.org/toxic-johann/es-fullscreen)
-[![devDependency Status](https://david-dm.org/toxic-johann/es-fullscreen/dev-status.svg)](https://david-dm.org/toxic-johann/es-fullscreen?type=dev)
+[![devDependency Status](https://david-dm.org/toxic-johann/es-fullscreen/dev-status.svg)](https://david-dm.org/toxic-johann/es-fullscreen?type=dev) [![Greenkeeper badge](https://badges.greenkeeper.io/toxic-johann/es-fullscreen.svg)](https://greenkeeper.io/)
 
 ## Get start
 
