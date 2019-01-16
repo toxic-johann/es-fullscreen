@@ -83,7 +83,7 @@
     "rollup-plugin-livereload": "^0.6.0",
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-replace": "^2.1.0",
-    "rollup-plugin-serve": "^0.6.0",
+    "rollup-plugin-serve": "^1.0.0",
     "rollup-plugin-uglify": "^6.0.0",
     "rollup-watch": "^4.3.1",
     "toxic-utils": "^0.3.0",
