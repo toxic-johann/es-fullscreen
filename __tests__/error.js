@@ -2,7 +2,7 @@ import esFullscreen from '../src/index';
 describe('error check', () => {
   describe('on/off', () => {
     test('only can handle fullscreenchange and fullscreenerror event', () => {
-      expect(() => esFullscreen.on('click', () => {})).toThrow('ESFullScreen only handle "fullscreenchange", "fullscreenerror" and "esfullscreenmethodchange" event, but not click. Pleas pass in an right event name.');
+      expect(() => esFullscreen.on('click', () => {})).toThrow('ESFullscreen only handle "fullscreenchange", "fullscreenerror" and "esfullscreenmethodchange" event, but not click. Pleas pass in an right event name.');
     });
     test('need a function', () => {
       expect(() => esFullscreen.on('fullscreenchange', 1)).toThrow('You must pass in an legal function, but not number.');

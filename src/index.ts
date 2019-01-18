@@ -4,7 +4,7 @@ import { dispatchEvent, native, setStyle, supportDocument } from './utils';
 const fullscreenEnabled = native('fullscreenEnabled');
 let useStyleFirst = false;
 
-class ESFullScreen {
+class ESFullscreen {
   public _savedStyles: object;
   public _bodyOverflow: string;
   public _htmlOverflow: string;
@@ -177,5 +177,5 @@ class ESFullScreen {
     });
   }
 }
-export const esFullScreen = new ESFullScreen();
-export default esFullScreen;
+export const esFullscreen = new ESFullscreen();
+export default esFullscreen;
