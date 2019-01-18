@@ -1,4 +1,4 @@
-declare class ESFullScreen {
+declare class ESFullscreen {
     _savedStyles: object;
     _bodyOverflow: string;
     _htmlOverflow: string;
@@ -25,5 +25,5 @@ declare class ESFullScreen {
     off(name: string, fn: (...args: any[]) => any, element?: HTMLElement | Document): void;
     _handleEvent(element: HTMLElement | Document, behavior: string, name: string, fn: (...args: any[]) => any): void;
 }
-export declare const esFullScreen: ESFullScreen;
-export default esFullScreen;
+export declare const esFullscreen: ESFullscreen;
+export default esFullscreen;
