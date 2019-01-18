@@ -177,4 +177,5 @@ class ESFullScreen {
     });
   }
 }
-export default new ESFullScreen();
+export const esFullScreen = new ESFullScreen();
+export default esFullScreen;
