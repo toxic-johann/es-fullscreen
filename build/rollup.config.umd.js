@@ -9,6 +9,7 @@ export default Object.assign(config, {
     format: 'umd',
     file: 'lib/index.browser.js',
     name: 'esFullscreen',
+    exports: 'named',
     banner,
   },
 });

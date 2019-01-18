@@ -3,6 +3,7 @@ export default Object.assign(base('common'), {
   output: {
     format: 'cjs',
     file: 'lib/index.js',
+    exports: 'named',
     banner,
   },
 });

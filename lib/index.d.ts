@@ -25,5 +25,5 @@ declare class ESFullScreen {
     off(name: string, fn: (...args: any[]) => any, element?: HTMLElement | Document): void;
     _handleEvent(element: HTMLElement | Document, behavior: string, name: string, fn: (...args: any[]) => any): void;
 }
-declare const _default: ESFullScreen;
-export default _default;
+export declare const esFullScreen: ESFullScreen;
+export default esFullScreen;
