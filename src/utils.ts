@@ -1,4 +1,4 @@
-import { isPlainObject, isString } from 'lodash';
+import { isPlainObject, isString } from 'lodash-es';
 import { isElement, isEvent, isFunction } from 'toxic-predicate-functions';
 import { SYNONYMS, VENDOR_PREFIXES } from './const';
 
