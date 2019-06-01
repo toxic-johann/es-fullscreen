@@ -86,7 +86,7 @@
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-uglify": "^6.0.2",
     "rollup-watch": "^4.3.1",
-    "toxic-utils": "^0.3.1",
+    "toxic-utils": "^0.4.0",
     "ts-jest": "^24.0.2",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
