@@ -42,7 +42,7 @@
     "@babel/runtime": "^7.4.3",
     "babel-plugin-lodash": "^3.3.4",
     "lodash": "^4.17.11",
-    "toxic-predicate-functions": "^0.2.5"
+    "toxic-predicate-functions": "^0.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
