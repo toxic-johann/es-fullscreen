@@ -1,4 +1,5 @@
-import { defined, isElement, isFunction, isPosterityNode } from 'toxic-predicate-functions';
+import { defined, isElement, isPosterityNode } from 'toxic-predicate-functions';
+import { isFunction } from 'lodash-es';
 import { DESKTOP_FULLSCREEN_STYLE, FULLSCREEN_CHANGE, FULLSCREEN_ERROR } from './const';
 import { dispatchEvent, native, setStyle, supportDocument } from './utils';
 const fullscreenEnabled = native('fullscreenEnabled');

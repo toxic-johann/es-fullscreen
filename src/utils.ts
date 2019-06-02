@@ -1,5 +1,5 @@
-import { isPlainObject, isString } from 'lodash-es';
-import { isElement, isEvent, isFunction } from 'toxic-predicate-functions';
+import { isFunction, isPlainObject, isString } from 'lodash-es';
+import { isElement, isEvent } from 'toxic-predicate-functions';
 import { SYNONYMS, VENDOR_PREFIXES } from './const';
 
 export const supportDocument = typeof document !== 'undefined';
